@@ -14,13 +14,17 @@ from collections import namedtuple
 import sys
 import re
 
-try:
-    INPUT = sys.argv[1]
-except:
-    raise Exception("Date missing. Try passing a valid date as argument.\nExample: dayssince.py 1/1/2020 to 1/1/2021")
+def main():
+    try:
+        INPUT = sys.argv[1]
+        date_1, date_2 = parse_date(INPUT)
+    except:
+        raise Exception("Date missing or incorrect. Try passing a valid date as argument (e.g. dd/mm/yyy).\nExample: dayssince.py 13/09/2012 to 12/12/2012")
+    daysbetween = dayssince(date_1.datetime, date_2.datetime)
+    daystr = "dia" if daysbetween == 1 else "dias"
+    connective = "desde" if daysbetween > 0 else "até"
 
-PATTERN = r"(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})"
-Date = namedtuple("Date", ["datetime", "str"])
+    print(f"{abs(daysbetween)} {daystr} entre {date_1.str} e {date_2.str}.")
 
 def formatdate(PATTERN, date):
     datestr = re.match(PATTERN, date)
@@ -34,20 +38,20 @@ def dayssince(date1, date2):
     d = max(date1, date2) - min(date1, date2)
     return d.days
 
-#namedtuple was having a hard time parsing the results from formatdate...
-#I found that the reason was because the list was a single argument,
-#so I had to add * to unpack it into separate arguments
-if "to" in INPUT:
-    date1 = Date(*formatdate(PATTERN, INPUT.split(" to ")[0]))
-    date2 = Date(*formatdate(PATTERN, INPUT.split(" to ")[1]))
-else:
-    date1 = Date(*formatdate(PATTERN, INPUT))
-    today = datetime.today()
-    date2 = Date(*formatdate(PATTERN, f"{today.day}-{today.month}-{today.year}"))
+def parse_date(datestr):
+    # PATTERN = r"(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})"
+    PATTERN = r"(0?[1-9]|[12][0-9]|3[01])[-\/](0?[1-9]|1[012])[-\/](\d{2,4})"
 
-daysbetween = dayssince(date1.datetime, date2.datetime)
-daystr = "dia" if daysbetween == 1 else "dias"
-connective = "desde" if daysbetween > 0 else "até"
 
-output = f"{abs(daysbetween)} {daystr} entre {date1.str} e {date2.str}"
-print(output)
+    Date = namedtuple("Date", ["datetime", "str"])
+    if "to" in datestr:
+        date_1 = Date(*formatdate(PATTERN, datestr.split(" to ")[0]))
+        date_2 = Date(*formatdate(PATTERN, datestr.split(" to ")[1]))
+    else:
+        date_1 = Date(*formatdate(PATTERN, datestr))
+        today = datetime.today()
+        date_2 = Date(*formatdate(PATTERN, f"{today.day}-{today.month}-{today.year}"))
+    return date_1, date_2
+
+if __name__ == '__main__':
+    main()

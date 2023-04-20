@@ -39,11 +39,9 @@ def dayssince(date1, date2):
     return d.days
 
 def parse_date(datestr):
-    # PATTERN = r"(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})"
     PATTERN = r"(0?[1-9]|[12][0-9]|3[01])[-\/](0?[1-9]|1[012])[-\/](\d{2,4})"
-
-
     Date = namedtuple("Date", ["datetime", "str"])
+
     if "to" in datestr:
         date_1 = Date(*formatdate(PATTERN, datestr.split(" to ")[0]))
         date_2 = Date(*formatdate(PATTERN, datestr.split(" to ")[1]))

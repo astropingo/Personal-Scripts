@@ -17,8 +17,8 @@ import re
 try:
     INPUT = sys.argv[1]
 except:
-    print(sys.argv)
-    exit()
+    raise Exception("Date missing. Try passing a valid date as argument.\nExample: dayssince.py 1/1/2020 to 1/1/2021")
+
 PATTERN = r"(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})"
 Date = namedtuple("Date", ["datetime", "str"])
 

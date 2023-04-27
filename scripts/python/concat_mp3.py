@@ -27,3 +27,5 @@ with open(file_list, "w", encoding="utf-8") as f:
 print("Starting concatenation...")
 ffmpeg_command = ['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(file_list), '-c', 'copy', str(output_file)]
 subprocess.run(ffmpeg_command)
+
+file_list.unlink()

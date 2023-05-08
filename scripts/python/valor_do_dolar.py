@@ -32,12 +32,12 @@ def main():
 
 def display(api_response, amount):
     USDBRL = float(api_response["USDBRL"]["bid"])
-    table = Table(title="Valor do dólar", box=None)
+    table = Table(title=f"\nValor do dólar (1 USD = {round(USDBRL, 2):.2f} BRL)")
     table.add_column("Valor", justify="center", style="cyan", no_wrap=True)
     table.add_column("USD -> BRL", justify="center", style="cyan", no_wrap=True)
     table.add_column("BRL -> USD", justify="center", style="cyan", no_wrap=True)
     table.add_row(f"{amount:.2f}", f"BRL {round(USDBRL * amount,2):.2f}", f"USD {round(amount / USDBRL,2):.2f}")
-    table.box = box.SIMPLE_HEAD
+    table.box = box.SIMPLE_HEAVY
     console = Console()
     console.print(table)
 

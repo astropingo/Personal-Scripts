@@ -13,7 +13,7 @@ def main():
 
 def correct_grammar(sentence, model):
     print("Fixing grammar for:\n", sentence)
-    prompt = f"Correct the grammar for this sentence, no need to rewrite, just fix the grammar and output the correct version: {sentence}"
+    prompt = f"Correct the grammar for this sentence, no need to rewrite, just fix the grammar and output the correct version. If you find any \n, please replace it with a new line: {sentence}"
     completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}])
     message = f"{completion.choices[0].message.content}"
     print(f"Correct version (using model {model}):")
